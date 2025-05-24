@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>DnD Charakterbogen</title>
+</head>
+<body>
+  <h1>Mein DnD Charakter</h1>
+  <div id="charakter-info"></div>
+  <script>
+    const race = JSON.parse(localStorage.getItem("myDnDCharRace") || "{}");
+    if (race.name) {
+      document.getElementById("charakter-info").innerText = "Rasse: " + race.name;
+    } else {
+      document.getElementById("charakter-info").innerText = "Keine Rasse ausgewählt.";
+    }
+  </script>
+</body>
+</html>
