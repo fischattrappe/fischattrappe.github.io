@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Test DnD Charakterbogen – Rasse</title>
+  <title>DnD Charakterbogen – Rasse</title>
   <style>
     body { font-family: sans-serif; padding: 2rem; }
     h1 { margin-bottom: 1rem; }
@@ -13,26 +13,54 @@
       max-width: 600px;
       background-color: #f9f9f9;
     }
+    textarea {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 1rem;
+      padding: 0.5rem;
+    }
+    button {
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+    }
   </style>
 </head>
 <body>
   <h1>Mein DnD Charakter – Rasse</h1>
+
   <div class="race-box" id="raceBox">
     <p><strong>Name:</strong> <span id="raceName">Noch keine Rasse ausgewählt</span></p>
     <p><strong>Quelle:</strong> <span id="raceSource">–</span></p>
     <p><strong>Beschreibung:</strong></p>
-    <div id="raceDesc">–</div>
+    <div id="raceDesc" style="margin-top: 0.5rem;">–</div>
   </div>
 
-  <script>
-    const raceData = JSON.parse(localStorage.getItem("myDnDCharRace") || "{}");
+  <h2>Race-Daten einfügen</h2>
+  <p>Kopiere die Rassendaten über den Button auf <a href="https://5e.tools/races.html" target="_blank">5e.tools</a> und füge sie hier ein:</p>
+  <textarea id="inputJson" rows="8" placeholder="Hier JSON einfügen..."></textarea><br>
+  <button onclick="loadRace()">Rasse übernehmen</button>
 
+  <script>
+    // Daten beim Laden anzeigen
+    const raceData = JSON.parse(localStorage.getItem("myDnDCharRace") || "{}");
     if (raceData.name) {
       document.getElementById("raceName").textContent = raceData.name;
-      document.getElementById("raceSource").textContent = raceData.source || "Unbekannt";
+      document.getElementById("raceSource").textContent = raceData.source || "-";
       document.getElementById("raceDesc").innerHTML = raceData.description || "<em>Keine Beschreibung gespeichert.</em>";
+    }
+
+    // Daten aus dem Eingabefeld übernehmen
+    function loadRace() {
+      try {
+        const text = document.getElementById("inputJson").value;
+        const data = JSON.parse(text);
+        localStorage.setItem("myDnDCharRace", JSON.stringify(data));
+        alert("Rasse gespeichert. Seite wird neu geladen...");
+        location.reload();
+      } catch (e) {
+        alert("Fehler beim Einlesen der Daten: " + e.message);
+      }
     }
   </script>
 </body>
 </html>
-
