@@ -1,19 +1,38 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <title>DnD Charakterbogen</title>
+  <meta charset="UTF-8">
+  <title>DnD Charakterbogen – Rasse</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    h1 { margin-bottom: 1rem; }
+    .race-box {
+      border: 1px solid #aaa;
+      border-radius: 8px;
+      padding: 1rem;
+      max-width: 600px;
+      background-color: #f9f9f9;
+    }
+  </style>
 </head>
 <body>
-  <h1>Mein DnD Charakter</h1>
-  <div id="charakter-info"></div>
+  <h1>Mein DnD Charakter – Rasse</h1>
+  <div class="race-box" id="raceBox">
+    <p><strong>Name:</strong> <span id="raceName">Noch keine Rasse ausgewählt</span></p>
+    <p><strong>Quelle:</strong> <span id="raceSource">–</span></p>
+    <p><strong>Beschreibung:</strong></p>
+    <div id="raceDesc">–</div>
+  </div>
+
   <script>
-    const race = JSON.parse(localStorage.getItem("myDnDCharRace") || "{}");
-    if (race.name) {
-      document.getElementById("charakter-info").innerText = "Rasse: " + race.name;
-    } else {
-      document.getElementById("charakter-info").innerText = "Keine Rasse ausgewählt.";
+    const raceData = JSON.parse(localStorage.getItem("myDnDCharRace") || "{}");
+
+    if (raceData.name) {
+      document.getElementById("raceName").textContent = raceData.name;
+      document.getElementById("raceSource").textContent = raceData.source || "Unbekannt";
+      document.getElementById("raceDesc").innerHTML = raceData.description || "<em>Keine Beschreibung gespeichert.</em>";
     }
   </script>
 </body>
 </html>
+
