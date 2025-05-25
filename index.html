@@ -2,150 +2,38 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>DnD Charakterbogen - Demo</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-    }
-    .container {
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-    .block {
-      border: 1px solid #ccc;
-      padding: 1rem;
-      min-width: 250px;
-      flex: 1;
-    }
-    label {
-      display: block;
-      margin-top: 0.5rem;
-    }
-    input[type=number], select {
-      width: 60px;
-      margin-left: 0.5rem;
-    }
-    .small-label {
-      font-size: 0.9em;
-    }
-  </style>
+  <title>DnD Charakterbogen</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>🧙 D&D Charakterbogen - Demo</h1>
+  <h1>🧙 D&D Charakterbogen - Demo</h1>
 
-<div class="container">
-  <div class="block">
-    <h3>Ability Scores</h3>
-    <label>Proficiency Bonus <input type="number" id="profBonus" value="2" onchange="update()"></label>
-    <label>Strength <input type="number" id="str" value="10" onchange="update()"></label>
-    <label>Dexterity <input type="number" id="dex" value="10" onchange="update()"></label>
-    <label>Constitution <input type="number" id="con" value="10" onchange="update()"></label>
-    <label>Intelligence <input type="number" id="int" value="10" onchange="update()"></label>
-    <label>Wisdom <input type="number" id="wis" value="10" onchange="update()"></label>
-    <label>Charisma <input type="number" id="cha" value="10" onchange="update()"></label>
+  <div class="container">
+    <!-- Ability Scores -->
+    <div class="block" id="abilities">
+      <!-- wird von JS befüllt -->
+    </div>
+
+    <!-- Saving Throws -->
+    <div class="block" id="saves">
+      <!-- wird von JS befüllt -->
+    </div>
+
+    <!-- Skills -->
+    <div class="block">
+      <h3>Skills</h3>
+      <div id="skills"></div>
+    </div>
+
+    <!-- Race Import -->
+    <div class="block">
+      <h3>Race Import</h3>
+      <button onclick="pasteRace()">📋 Rasse einfügen</button>
+      <pre id="raceInfo" style="white-space: pre-wrap;"></pre>
+    </div>
   </div>
 
-  <div class="block">
-    <h3>Saving Throws</h3>
-    <label><input type="checkbox" id="saveStrProf" onchange="update()"> Strength: <input type="number" id="saveStr" readonly></label>
-    <label><input type="checkbox" id="saveDexProf" onchange="update()"> Dexterity: <input type="number" id="saveDex" readonly></label>
-    <label><input type="checkbox" id="saveConProf" onchange="update()"> Constitution: <input type="number" id="saveCon" readonly></label>
-    <label><input type="checkbox" id="saveIntProf" onchange="update()"> Intelligence: <input type="number" id="saveInt" readonly></label>
-    <label><input type="checkbox" id="saveWisProf" onchange="update()"> Wisdom: <input type="number" id="saveWis" readonly></label>
-    <label><input type="checkbox" id="saveChaProf" onchange="update()"> Charisma: <input type="number" id="saveCha" readonly></label>
-  </div>
-
-  <div class="block">
-    <h3>Skills</h3>
-    <div id="skills"></div>
-  </div>
-</div>
-
-<script>
-const skillList = [
-  { id: "acrobatics", name: "Acrobatics", stat: "dex" },
-  { id: "animal", name: "Animal Handling", stat: "wis" },
-  { id: "arcana", name: "Arcana", stat: "int" },
-  { id: "athletics", name: "Athletics", stat: "str" },
-  { id: "deception", name: "Deception", stat: "cha" },
-  { id: "history", name: "History", stat: "int" },
-  { id: "insight", name: "Insight", stat: "wis" },
-  { id: "intimidation", name: "Intimidation", stat: "cha" },
-  { id: "investigation", name: "Investigation", stat: "int" },
-  { id: "medicine", name: "Medicine", stat: "wis" },
-  { id: "nature", name: "Nature", stat: "int" },
-  { id: "perception", name: "Perception", stat: "wis" },
-  { id: "performance", name: "Performance", stat: "cha" },
-  { id: "persuasion", name: "Persuasion", stat: "cha" },
-  { id: "religion", name: "Religion", stat: "int" },
-  { id: "sleight", name: "Sleight of Hand", stat: "dex" },
-  { id: "stealth", name: "Stealth", stat: "dex" },
-  { id: "survival", name: "Survival", stat: "wis" },
-];
-
-function getMod(score) {
-  return Math.floor((score - 10) / 2);
-}
-
-function update() {
-  const scores = {
-    str: parseInt(document.getElementById("str").value) || 0,
-    dex: parseInt(document.getElementById("dex").value) || 0,
-    con: parseInt(document.getElementById("con").value) || 0,
-    int: parseInt(document.getElementById("int").value) || 0,
-    wis: parseInt(document.getElementById("wis").value) || 0,
-    cha: parseInt(document.getElementById("cha").value) || 0,
-  };
-
-  const profBonus = parseInt(document.getElementById("profBonus").value) || 0;
-
-  const mods = {};
-  for (let stat in scores) {
-    mods[stat] = getMod(scores[stat]);
-  }
-
-  // Saving Throws
-  const saves = ["str", "dex", "con", "int", "wis", "cha"];
-  saves.forEach(stat => {
-    const prof = document.getElementById(`save${stat.charAt(0).toUpperCase() + stat.slice(1)}Prof`).checked;
-    const val = mods[stat] + (prof ? profBonus : 0);
-    document.getElementById(`save${stat.charAt(0).toUpperCase() + stat.slice(1)}`).value = val;
-  });
-
-  // Skills
-  skillList.forEach(skill => {
-    const profLevel = parseInt(document.getElementById(`${skill.id}Prof`).value);
-    const mod = mods[skill.stat];
-    const bonus = mod + (profLevel * profBonus);
-    document.getElementById(`${skill.id}`).value = bonus;
-  });
-}
-
-// Initial render of skills
-function initSkills() {
-  const skillDiv = document.getElementById("skills");
-  skillList.forEach(skill => {
-    const label = document.createElement("label");
-    label.className = "small-label";
-    label.innerHTML = `
-      ${skill.name} (${skill.stat.toUpperCase()})
-      <select id="${skill.id}Prof" onchange="update()">
-        <option value="0">—</option>
-        <option value="1">✓</option>
-        <option value="2">⧗</option>
-      </select>
-      <input type="number" id="${skill.id}" readonly>
-    `;
-    skillDiv.appendChild(label);
-  });
-  update();
-}
-
-initSkills();
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
