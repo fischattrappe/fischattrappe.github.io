@@ -138,40 +138,53 @@ async function pasteRace() {
   try {
     const text = await navigator.clipboard.readText();
     const data = JSON.parse(text);
-    let speedText = `${typeof data.speed === "number" ? `${data.speed} ft` : data.speed}`;
 
-    if (data.otherSpeeds && typeof data.otherSpeeds === "object") {
-      const translations = {
-        fly: "Flug",
-        swim: "Schwimmen",
-        climb: "Klettern",
-        burrow: "Graben"
-      };
-    
-      const extras = Object.entries(data.otherSpeeds)
-        .map(([type, value]) => {
-          const label = translations[type] || type;
-          if (typeof value === "number") {
-            return `${label}: ${value} ft`;
-          } else if (typeof value === "string") {
-            return `${label}: gleich Gehgeschwindigkeit`; // oder "equal to walking speed"
-          } else {
-            return `${label}: ?`;
-          }
-        })
-        .join(", ");
-    
-      speedText += ` (${extras})`;
+    let speedText = "";
+    const translations = {
+      walk: "Gehen",
+      fly: "Flug",
+      swim: "Schwimmen",
+      climb: "Klettern",
+      burrow: "Graben"
+    };
+
+    if (typeof data.speed === "number") {
+      speedText = `${data.speed} ft`;
+    } else if (typeof data.speed === "object") {
+      const entries = Object.entries(data.speed).map(([type, value]) => {
+        const label = translations[type] || type;
+        if (typeof value === "number") {
+          return `${label}: ${value} ft`;
+        } else if (typeof value === "string") {
+          return `${label}: gleich Gehgeschwindigkeit`;
+        } else {
+          return `${label}: ?`;
+        }
+      });
+
+      // Format wie: "30 ft (Flug: 30 ft, Schwimmen: ...)"
+      const walkSpeed = data.speed.walk;
+      if (typeof walkSpeed === "number") {
+        speedText = `${walkSpeed} ft`;
+        const otherSpeeds = entries.filter(e => !e.startsWith("Gehen:"));
+        if (otherSpeeds.length > 0) {
+          speedText += ` (${otherSpeeds.join(", ")})`;
+        }
+      } else {
+        // Kein walk-Speed vorhanden – gib alles aus
+        speedText = entries.join(", ");
+      }
+    } else {
+      speedText = "Unbekannt";
     }
-
 
     document.getElementById("raceInfo").innerText =
       `Race: ${data.name}\n\nSpeed: ${speedText}\n\nAbilities:\n${data.abilities}`;
-
   } catch (e) {
     alert("Fehler beim Einfügen der Rasse: " + e.message);
   }
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   createAbilityInputs();
