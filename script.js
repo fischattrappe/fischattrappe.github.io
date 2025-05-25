@@ -131,18 +131,8 @@ function updateAll() {
     const bonus = mod + proficiencyBonus * multiplier;
     document.getElementById(`skill-${skill}`).innerText = bonus >= 0 ? `+${bonus}` : `${bonus}`;
   }
-
-
-
-
-  for (const [skill, base] of Object.entries(skills)) {
-    const mod = getMod(parseInt(document.getElementById(`score-${base}`).value));
-    const prof = document.getElementById(`skill-prof-${skill}`).checked;
-    const expert = document.getElementById(`skill-expert-${skill}`).checked;
-    let bonus = mod + (prof ? proficiencyBonus * (expert ? 2 : 1) : 0);
-    document.getElementById(`skill-${skill}`).innerText = bonus >= 0 ? `+${bonus}` : `${bonus}`;
-  }
 }
+
 
 async function pasteRace() {
   try {
