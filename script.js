@@ -155,7 +155,7 @@ async function pasteRace() {
         const label = translations[type] || type;
         if (typeof value === "number") {
           return `${label}: ${value} ft`;
-        } else if (typeof value === "string") {
+        } else if (typeof value === true) {
           return `${label}: gleich Gehgeschwindigkeit`;
         } else {
           return `${label}: ?`;
