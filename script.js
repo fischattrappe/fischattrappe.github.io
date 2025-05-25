@@ -141,10 +141,10 @@ async function pasteRace() {
     let speedText = `${data.speed} ft`;
 if (data.otherSpeeds && typeof data.otherSpeeds === "object") {
   const translations = {
-    fly: "Flug",
-    swim: "Schwimmen",
-    climb: "Klettern",
-    burrow: "Graben"
+    fly: "fly",
+    swim: "swim",
+    climb: "climb",
+    burrow: "burrow"
   };
   const extras = Object.entries(data.otherSpeeds)
     .map(([type, value]) => `${translations[type] || type}: ${value} ft`)
@@ -153,7 +153,7 @@ if (data.otherSpeeds && typeof data.otherSpeeds === "object") {
 }
 
 document.getElementById("raceInfo").innerText =
-  `Rasse: ${data.name}\n\nBewegung: ${speedText}\n\nEigenschaften:\n${data.abilities}`;
+  `Race: ${data.name}\n\nSpeed: ${speedText}\n\nAbilities:\n${data.abilities}`;
 
   } catch (e) {
     alert("Fehler beim Einfügen der Rasse: " + e.message);
