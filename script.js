@@ -134,6 +134,7 @@ function updateAll() {
 }
 
 
+
   for (const [skill, base] of Object.entries(skills)) {
     const mod = getMod(parseInt(document.getElementById(`score-${base}`).value));
     const prof = document.getElementById(`skill-prof-${skill}`).checked;
