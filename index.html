@@ -1,46 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>D&D Race Viewer</title>
+  <meta charset="UTF-8">
+  <title>DnD Charakterbogen - Demo</title>
   <style>
     body {
       font-family: sans-serif;
-      margin: 2rem;
-      max-width: 800px;
+      padding: 20px;
     }
-    textarea {
-      width: 100%;
-      height: 200px;
-      font-family: monospace;
+    .container {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
     }
-    .output {
-      margin-top: 2rem;
+    .block {
+      border: 1px solid #ccc;
       padding: 1rem;
-      background: #f0f0f0;
-      border-radius: 8px;
+      min-width: 250px;
+      flex: 1;
     }
-    h2 {
-      margin-bottom: 0;
+    label {
+      display: block;
+      margin-top: 0.5rem;
+    }
+    input[type=number], select {
+      width: 60px;
+      margin-left: 0.5rem;
+    }
+    .small-label {
+      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
 
-  <style>
-  .stat-block { display: flex; gap: 1rem; margin-bottom: 1rem; }
-  .block { border: 1px solid #ccc; padding: 1rem; width: 200px; }
-  label { display: block; margin-top: 0.5rem; }
-  input[type=number] { width: 60px; }
-</style>
+<h1>🧙 D&D Charakterbogen - Demo</h1>
 
-<div class="stat-block">
+<div class="container">
   <div class="block">
     <h3>Ability Scores</h3>
     <label>Strength <input type="number" id="str" value="10" onchange="update()"></label>
-    <label>Dexterity <input type="number" id="dex" value="14" onchange="update()"></label>
-    <label>Intelligence <input type="number" id="int" value="12" onchange="update()"></label>
+    <label>Dexterity <input type="number" id="dex" value="10" onchange="update()"></label>
+    <label>Constitution <input type="number" id="con" value="10" onchange="update()"></label>
+    <label>Intelligence <input type="number" id="int" value="10" onchange="update()"></label>
+    <label>Wisdom <input type="number" id="wis" value="10" onchange="update()"></label>
+    <label>Charisma <input type="number" id="cha" value="10" onchange="update()"></label>
     <label>Proficiency Bonus <input type="number" id="profBonus" value="2" onchange="update()"></label>
   </div>
 
@@ -48,117 +52,100 @@
     <h3>Saving Throws</h3>
     <label><input type="checkbox" id="saveStrProf" onchange="update()"> Strength: <input type="number" id="saveStr" readonly></label>
     <label><input type="checkbox" id="saveDexProf" onchange="update()"> Dexterity: <input type="number" id="saveDex" readonly></label>
+    <label><input type="checkbox" id="saveConProf" onchange="update()"> Constitution: <input type="number" id="saveCon" readonly></label>
     <label><input type="checkbox" id="saveIntProf" onchange="update()"> Intelligence: <input type="number" id="saveInt" readonly></label>
+    <label><input type="checkbox" id="saveWisProf" onchange="update()"> Wisdom: <input type="number" id="saveWis" readonly></label>
+    <label><input type="checkbox" id="saveChaProf" onchange="update()"> Charisma: <input type="number" id="saveCha" readonly></label>
   </div>
 
   <div class="block">
     <h3>Skills</h3>
-    <label>
-      Acrobatics (DEX)
-      <select id="acroProf" onchange="update()">
-        <option value="0">—</option>
-        <option value="1">Proficient</option>
-        <option value="2">Expertise</option>
-      </select>
-      <input type="number" id="acro" readonly>
-    </label>
-    <label>
-      Investigation (INT)
-      <select id="investProf" onchange="update()">
-        <option value="0">—</option>
-        <option value="1">Proficient</option>
-        <option value="2">Expertise</option>
-      </select>
-      <input type="number" id="invest" readonly>
-    </label>
+    <div id="skills"></div>
   </div>
 </div>
 
-  
-  
-  <h1>D&D Rassen-Importer</h1>
-  <p>Füge den JSON-Code ein, den du über den Button auf <code>5e.tools</code> kopiert hast:</p>
-  <textarea id="jsonInput" placeholder="JSON hier einfügen..."></textarea>
-  <button onclick="renderRace()">Anzeigen</button>
+<script>
+const skillList = [
+  { id: "acrobatics", name: "Acrobatics", stat: "dex" },
+  { id: "animal", name: "Animal Handling", stat: "wis" },
+  { id: "arcana", name: "Arcana", stat: "int" },
+  { id: "athletics", name: "Athletics", stat: "str" },
+  { id: "deception", name: "Deception", stat: "cha" },
+  { id: "history", name: "History", stat: "int" },
+  { id: "insight", name: "Insight", stat: "wis" },
+  { id: "intimidation", name: "Intimidation", stat: "cha" },
+  { id: "investigation", name: "Investigation", stat: "int" },
+  { id: "medicine", name: "Medicine", stat: "wis" },
+  { id: "nature", name: "Nature", stat: "int" },
+  { id: "perception", name: "Perception", stat: "wis" },
+  { id: "performance", name: "Performance", stat: "cha" },
+  { id: "persuasion", name: "Persuasion", stat: "cha" },
+  { id: "religion", name: "Religion", stat: "int" },
+  { id: "sleight", name: "Sleight of Hand", stat: "dex" },
+  { id: "stealth", name: "Stealth", stat: "dex" },
+  { id: "survival", name: "Survival", stat: "wis" },
+];
 
-  <div id="output" class="output" style="display:none;">
-    <h2 id="raceName"></h2>
-    <p><strong>Quelle:</strong> <span id="raceSource"></span></p>
-    <p><strong>Geschwindigkeit:</strong> <span id="raceSpeed"></span> ft</p>
-    <p><strong>Größe:</strong> <span id="raceSize"></span></p>
-    <h3>Fähigkeiten</h3>
-    <div id="raceAbilities"></div>
-  </div>
-
-  <script>
-    function renderRace() {
-      const input = document.getElementById("jsonInput").value;
-      try {
-        const data = JSON.parse(input);
-
-        // Einfache Darstellung
-        document.getElementById("raceName").innerText = data.name;
-        document.getElementById("raceSource").innerText = data.source;
-        document.getElementById("raceSpeed").innerText = data.speed;
-        document.getElementById("raceSize").innerText = data.size.join(", ");
-
-        // Fähigkeiten: Markdown-ähnlich in HTML
-        const html = data.abilities
-          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")  // Fettdruck
-          .replace(/\n/g, "<br>")                             // Zeilenumbruch
-          .replace(/\{@.*?\s(.*?)\|.*?\}/g, "$1");            // {@...} Kürzel vereinfachen
-
-        document.getElementById("raceAbilities").innerHTML = html;
-        document.getElementById("output").style.display = "block";
-      } catch (e) {
-        alert("Ungültiges JSON!");
-        console.error(e);
-      }
-    }
-  </script>
-
-  <script>
 function getMod(score) {
   return Math.floor((score - 10) / 2);
 }
 
 function update() {
-  const str = parseInt(document.getElementById("str").value) || 0;
-  const dex = parseInt(document.getElementById("dex").value) || 0;
-  const int = parseInt(document.getElementById("int").value) || 0;
+  const scores = {
+    str: parseInt(document.getElementById("str").value) || 0,
+    dex: parseInt(document.getElementById("dex").value) || 0,
+    con: parseInt(document.getElementById("con").value) || 0,
+    int: parseInt(document.getElementById("int").value) || 0,
+    wis: parseInt(document.getElementById("wis").value) || 0,
+    cha: parseInt(document.getElementById("cha").value) || 0,
+  };
+
   const profBonus = parseInt(document.getElementById("profBonus").value) || 0;
 
-  const mods = {
-    STR: getMod(str),
-    DEX: getMod(dex),
-    INT: getMod(int)
-  };
+  const mods = {};
+  for (let stat in scores) {
+    mods[stat] = getMod(scores[stat]);
+  }
 
   // Saving Throws
-  const saves = {
-    STR: document.getElementById("saveStrProf").checked ? mods.STR + profBonus : mods.STR,
-    DEX: document.getElementById("saveDexProf").checked ? mods.DEX + profBonus : mods.DEX,
-    INT: document.getElementById("saveIntProf").checked ? mods.INT + profBonus : mods.INT
-  };
-
-  document.getElementById("saveStr").value = saves.STR;
-  document.getElementById("saveDex").value = saves.DEX;
-  document.getElementById("saveInt").value = saves.INT;
+  const saves = ["str", "dex", "con", "int", "wis", "cha"];
+  saves.forEach(stat => {
+    const prof = document.getElementById(`save${stat.charAt(0).toUpperCase() + stat.slice(1)}Prof`).checked;
+    const val = mods[stat] + (prof ? profBonus : 0);
+    document.getElementById(`save${stat.charAt(0).toUpperCase() + stat.slice(1)}`).value = val;
+  });
 
   // Skills
-  const acroProfLevel = parseInt(document.getElementById("acroProf").value);
-  const investProfLevel = parseInt(document.getElementById("investProf").value);
-
-  const acroBonus = mods.DEX + (acroProfLevel * profBonus);
-  const investBonus = mods.INT + (investProfLevel * profBonus);
-
-  document.getElementById("acro").value = acroBonus;
-  document.getElementById("invest").value = investBonus;
+  skillList.forEach(skill => {
+    const profLevel = parseInt(document.getElementById(`${skill.id}Prof`).value);
+    const mod = mods[skill.stat];
+    const bonus = mod + (profLevel * profBonus);
+    document.getElementById(`${skill.id}`).value = bonus;
+  });
 }
+
+// Initial render of skills
+function initSkills() {
+  const skillDiv = document.getElementById("skills");
+  skillList.forEach(skill => {
+    const label = document.createElement("label");
+    label.className = "small-label";
+    label.innerHTML = `
+      ${skill.name} (${skill.stat.toUpperCase()})
+      <select id="${skill.id}Prof" onchange="update()">
+        <option value="0">—</option>
+        <option value="1">✓</option>
+        <option value="2">⧗</option>
+      </select>
+      <input type="number" id="${skill.id}" readonly>
+    `;
+    skillDiv.appendChild(label);
+  });
+  update();
+}
+
+initSkills();
 </script>
 
-
-
-  
 </body>
 </html>
