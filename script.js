@@ -179,7 +179,7 @@ async function pasteRace() {
     }
 
     document.getElementById("raceInfo").innerText =
-      `Race: ${data.name}\n\nSpeed: ${speedText}\n\nAbilities:\n${data.abilities}`;
+      `Species: ${data.name}\n\nSpeed: ${speedText}\n\nAbilities:\n${data.abilities}`;
   } catch (e) {
     alert("Fehler beim Einfügen der Rasse: " + e.message);
   }
