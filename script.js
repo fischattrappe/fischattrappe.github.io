@@ -135,8 +135,12 @@ async function pasteRace() {
   }
 }
 
-createAbilityInputs();
-createSavingThrows();
-createSkills();
-updateAll();
+document.addEventListener("DOMContentLoaded", () => {
+  createAbilityInputs();
+  createSavingThrows();
+  createSkills();
+  updateAll();
+  document.getElementById("race-import-button").addEventListener("click", pasteRace);
+});
+
 
