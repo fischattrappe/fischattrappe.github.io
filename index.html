@@ -1,64 +1,69 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>DnD Charakterbogen – Rasse</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>D&D Race Viewer</title>
   <style>
-    body { font-family: sans-serif; padding: 2rem; }
-    h1 { margin-bottom: 1rem; }
-    .race-box {
-      border: 1px solid #aaa;
-      border-radius: 8px;
-      padding: 1rem;
-      max-width: 600px;
-      background-color: #f9f9f9;
+    body {
+      font-family: sans-serif;
+      margin: 2rem;
+      max-width: 800px;
     }
     textarea {
       width: 100%;
-      max-width: 600px;
-      margin-top: 1rem;
-      padding: 0.5rem;
+      height: 200px;
+      font-family: monospace;
     }
-    button {
-      margin-top: 0.5rem;
-      padding: 0.5rem 1rem;
+    .output {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #f0f0f0;
+      border-radius: 8px;
+    }
+    h2 {
+      margin-bottom: 0;
     }
   </style>
 </head>
 <body>
-  <h1>Mein DnD Charakter – Rasse</h1>
+  <h1>D&D Rassen-Importer</h1>
+  <p>Füge den JSON-Code ein, den du über den Button auf <code>5e.tools</code> kopiert hast:</p>
+  <textarea id="jsonInput" placeholder="JSON hier einfügen..."></textarea>
+  <button onclick="renderRace()">Anzeigen</button>
 
-  <div class="race-box" id="raceBox">
-    <p><strong>Name:</strong> <span id="raceName">Noch keine Rasse ausgewählt</span></p>
-    <p><strong>Quelle:</strong> <span id="raceSource">–</span></p>
-    <p><strong>Beschreibung:</strong></p>
-    <div id="raceDesc" style="margin-top: 0.5rem;">–</div>
+  <div id="output" class="output" style="display:none;">
+    <h2 id="raceName"></h2>
+    <p><strong>Quelle:</strong> <span id="raceSource"></span></p>
+    <p><strong>Geschwindigkeit:</strong> <span id="raceSpeed"></span> ft</p>
+    <p><strong>Größe:</strong> <span id="raceSize"></span></p>
+    <h3>Fähigkeiten</h3>
+    <div id="raceAbilities"></div>
   </div>
 
-  <h2>Race-Daten einfügen</h2>
-  <p>Kopiere die Rassendaten über den Button auf <a href="https://5e.tools/races.html" target="_blank">5e.tools</a> und füge sie hier ein:</p>
-  <textarea id="inputJson" rows="8" placeholder="Hier JSON einfügen..."></textarea><br>
-  <button onclick="loadRace()">Rasse übernehmen</button>
-
   <script>
-    // Daten beim Laden anzeigen
-    const raceData = JSON.parse(localStorage.getItem("myDnDCharRace") || "{}");
-    if (raceData.name) {
-      document.getElementById("raceName").textContent = raceData.name;
-      document.getElementById("raceSource").textContent = raceData.source || "-";
-      document.getElementById("raceDesc").innerHTML = raceData.description || "<em>Keine Beschreibung gespeichert.</em>";
-    }
-
-    // Daten aus dem Eingabefeld übernehmen
-    function loadRace() {
+    function renderRace() {
+      const input = document.getElementById("jsonInput").value;
       try {
-        const text = document.getElementById("inputJson").value;
-        const data = JSON.parse(text);
-        localStorage.setItem("myDnDCharRace", JSON.stringify(data));
-        alert("Rasse gespeichert. Seite wird neu geladen...");
-        location.reload();
+        const data = JSON.parse(input);
+
+        // Einfache Darstellung
+        document.getElementById("raceName").innerText = data.name;
+        document.getElementById("raceSource").innerText = data.source;
+        document.getElementById("raceSpeed").innerText = data.speed;
+        document.getElementById("raceSize").innerText = data.size.join(", ");
+
+        // Fähigkeiten: Markdown-ähnlich in HTML
+        const html = data.abilities
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")  // Fettdruck
+          .replace(/\n/g, "<br>")                             // Zeilenumbruch
+          .replace(/\{@.*?\s(.*?)\|.*?\}/g, "$1");            // {@...} Kürzel vereinfachen
+
+        document.getElementById("raceAbilities").innerHTML = html;
+        document.getElementById("output").style.display = "block";
       } catch (e) {
-        alert("Fehler beim Einlesen der Daten: " + e.message);
+        alert("Ungültiges JSON!");
+        console.error(e);
       }
     }
   </script>
