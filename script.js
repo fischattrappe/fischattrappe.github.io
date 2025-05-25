@@ -138,8 +138,23 @@ async function pasteRace() {
   try {
     const text = await navigator.clipboard.readText();
     const data = JSON.parse(text);
-    document.getElementById("raceInfo").innerText =
-      `Rasse: ${data.name}\n\nGeschwindigkeit: ${data.speed} ft.\n\nEigenschaften:\n${data.abilities}`;
+    let speedText = `${data.speed} ft`;
+if (data.otherSpeeds && typeof data.otherSpeeds === "object") {
+  const translations = {
+    fly: "Flug",
+    swim: "Schwimmen",
+    climb: "Klettern",
+    burrow: "Graben"
+  };
+  const extras = Object.entries(data.otherSpeeds)
+    .map(([type, value]) => `${translations[type] || type}: ${value} ft`)
+    .join(", ");
+  speedText += ` (${extras})`;
+}
+
+document.getElementById("raceInfo").innerText =
+  `Rasse: ${data.name}\n\nBewegung: ${speedText}\n\nEigenschaften:\n${data.abilities}`;
+
   } catch (e) {
     alert("Fehler beim Einfügen der Rasse: " + e.message);
   }
