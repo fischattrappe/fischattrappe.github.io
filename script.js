@@ -155,7 +155,7 @@ async function pasteRace() {
         const label = translations[type] || type;
         if (typeof value === "number") {
           return `${label}: ${value} ft`;
-        } else if (typeof value === true) {
+        } else if (value === true) {
           return `${label}: gleich Gehgeschwindigkeit`;
         } else {
           return `${label}: ?`;
@@ -179,7 +179,7 @@ async function pasteRace() {
     }
 
     document.getElementById("raceInfo").innerText =
-      `Species: ${data.name}\n\nSpeed: ${speedText}\n\nAbilities:\n${data.abilities}`;
+      `RACE: ${data.name}\n\nSpeed: ${speedText}\n\nAbilities:\n${data.abilities}`;
   } catch (e) {
     alert("Fehler beim Einfügen der Rasse: " + e.message);
   }
