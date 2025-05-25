@@ -27,6 +27,55 @@
   </style>
 </head>
 <body>
+
+  <style>
+  .stat-block { display: flex; gap: 1rem; margin-bottom: 1rem; }
+  .block { border: 1px solid #ccc; padding: 1rem; width: 200px; }
+  label { display: block; margin-top: 0.5rem; }
+  input[type=number] { width: 60px; }
+</style>
+
+<div class="stat-block">
+  <div class="block">
+    <h3>Ability Scores</h3>
+    <label>Strength <input type="number" id="str" value="10" onchange="update()"></label>
+    <label>Dexterity <input type="number" id="dex" value="14" onchange="update()"></label>
+    <label>Intelligence <input type="number" id="int" value="12" onchange="update()"></label>
+    <label>Proficiency Bonus <input type="number" id="profBonus" value="2" onchange="update()"></label>
+  </div>
+
+  <div class="block">
+    <h3>Saving Throws</h3>
+    <label><input type="checkbox" id="saveStrProf" onchange="update()"> Strength: <input type="number" id="saveStr" readonly></label>
+    <label><input type="checkbox" id="saveDexProf" onchange="update()"> Dexterity: <input type="number" id="saveDex" readonly></label>
+    <label><input type="checkbox" id="saveIntProf" onchange="update()"> Intelligence: <input type="number" id="saveInt" readonly></label>
+  </div>
+
+  <div class="block">
+    <h3>Skills</h3>
+    <label>
+      Acrobatics (DEX)
+      <select id="acroProf" onchange="update()">
+        <option value="0">—</option>
+        <option value="1">Proficient</option>
+        <option value="2">Expertise</option>
+      </select>
+      <input type="number" id="acro" readonly>
+    </label>
+    <label>
+      Investigation (INT)
+      <select id="investProf" onchange="update()">
+        <option value="0">—</option>
+        <option value="1">Proficient</option>
+        <option value="2">Expertise</option>
+      </select>
+      <input type="number" id="invest" readonly>
+    </label>
+  </div>
+</div>
+
+  
+  
   <h1>D&D Rassen-Importer</h1>
   <p>Füge den JSON-Code ein, den du über den Button auf <code>5e.tools</code> kopiert hast:</p>
   <textarea id="jsonInput" placeholder="JSON hier einfügen..."></textarea>
@@ -67,5 +116,49 @@
       }
     }
   </script>
+
+  <script>
+function getMod(score) {
+  return Math.floor((score - 10) / 2);
+}
+
+function update() {
+  const str = parseInt(document.getElementById("str").value) || 0;
+  const dex = parseInt(document.getElementById("dex").value) || 0;
+  const int = parseInt(document.getElementById("int").value) || 0;
+  const profBonus = parseInt(document.getElementById("profBonus").value) || 0;
+
+  const mods = {
+    STR: getMod(str),
+    DEX: getMod(dex),
+    INT: getMod(int)
+  };
+
+  // Saving Throws
+  const saves = {
+    STR: document.getElementById("saveStrProf").checked ? mods.STR + profBonus : mods.STR,
+    DEX: document.getElementById("saveDexProf").checked ? mods.DEX + profBonus : mods.DEX,
+    INT: document.getElementById("saveIntProf").checked ? mods.INT + profBonus : mods.INT
+  };
+
+  document.getElementById("saveStr").value = saves.STR;
+  document.getElementById("saveDex").value = saves.DEX;
+  document.getElementById("saveInt").value = saves.INT;
+
+  // Skills
+  const acroProfLevel = parseInt(document.getElementById("acroProf").value);
+  const investProfLevel = parseInt(document.getElementById("investProf").value);
+
+  const acroBonus = mods.DEX + (acroProfLevel * profBonus);
+  const investBonus = mods.INT + (investProfLevel * profBonus);
+
+  document.getElementById("acro").value = acroBonus;
+  document.getElementById("invest").value = investBonus;
+}
+</script>
+
+
+
+  
 </body>
 </html>
