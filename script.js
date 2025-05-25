@@ -131,7 +131,7 @@ function updateAll() {
     const bonus = mod + proficiencyBonus * multiplier;
     document.getElementById(`skill-${skill}`).innerText = bonus >= 0 ? `+${bonus}` : `${bonus}`;
   }
-}
+
 
 
 
@@ -142,7 +142,7 @@ function updateAll() {
     let bonus = mod + (prof ? proficiencyBonus * (expert ? 2 : 1) : 0);
     document.getElementById(`skill-${skill}`).innerText = bonus >= 0 ? `+${bonus}` : `${bonus}`;
   }
-
+}
 
 async function pasteRace() {
   try {
