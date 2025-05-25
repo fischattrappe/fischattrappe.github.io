@@ -139,18 +139,33 @@ async function pasteRace() {
     const text = await navigator.clipboard.readText();
     const data = JSON.parse(text);
     let speedText = `${data.speed} ft`;
+    
+let speedText = `${typeof data.speed === "number" ? `${data.speed} ft` : data.speed}`;
+
 if (data.otherSpeeds && typeof data.otherSpeeds === "object") {
   const translations = {
-    fly: "fly",
-    swim: "swim",
-    climb: "climb",
-    burrow: "burrow"
+    fly: "Flug",
+    swim: "Schwimmen",
+    climb: "Klettern",
+    burrow: "Graben"
   };
+
   const extras = Object.entries(data.otherSpeeds)
-    .map(([type, value]) => `${translations[type] || type}: ${value} ft`)
+    .map(([type, value]) => {
+      const label = translations[type] || type;
+      if (typeof value === "number") {
+        return `${label}: ${value} ft`;
+      } else if (typeof value === "string") {
+        return `${label}: gleich Gehgeschwindigkeit`; // oder "equal to walking speed"
+      } else {
+        return `${label}: ?`;
+      }
+    })
     .join(", ");
+
   speedText += ` (${extras})`;
 }
+
 
 document.getElementById("raceInfo").innerText =
   `Race: ${data.name}\n\nSpeed: ${speedText}\n\nAbilities:\n${data.abilities}`;
