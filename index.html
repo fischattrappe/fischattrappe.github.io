@@ -1,34 +1,34 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DnD Charakterbogen</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <h1>🧙 D&D Charakterbogen - Demo</h1>
+  <h1>🧙 D&D Charakterbogen</h1>
 
   <div class="container">
-    <!-- Ability Scores -->
     <div class="block" id="abilities">
-      <!-- wird von JS befüllt -->
+      <h2>Ability Scores</h2>
+      <!-- Dynamisch per JS -->
     </div>
 
-    <!-- Saving Throws -->
     <div class="block" id="saves">
-      <!-- wird von JS befüllt -->
+      <h2>Saving Throws</h2>
+      <!-- Dynamisch per JS -->
     </div>
 
-    <!-- Skills -->
-    <div class="block">
-      <h3>Skills</h3>
-      <div id="skills"></div>
+    <div class="block" id="skillsBlock">
+      <h2>Skills</h2>
+      <div id="skills">
+        <!-- Dynamisch per JS -->
+      </div>
     </div>
 
-    <!-- Race Import -->
-    <div class="block">
-      <h3>Race Import</h3>
+    <div class="block" id="raceImport">
+      <h2>Race Import</h2>
       <button onclick="pasteRace()">📋 Rasse einfügen</button>
       <pre id="raceInfo" style="white-space: pre-wrap;"></pre>
     </div>
