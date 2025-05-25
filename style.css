@@ -1,1 +1,32 @@
+body {
+  font-family: sans-serif;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.block {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  min-width: 250px;
+  flex: 1;
+}
+
+label {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+input[type=number], select {
+  width: 60px;
+  margin-left: 0.5rem;
+}
+
+.small-label {
+  font-size: 0.9em;
+}
 
