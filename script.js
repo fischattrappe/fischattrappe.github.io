@@ -22,6 +22,11 @@ const skills = {
 
 let proficiencyBonus = 2;
 
+function getProficiencyBonus() {
+  const input = document.getElementById("profBonus");
+  return input ? parseInt(input.value) || 0 : proficiencyBonus;
+}
+
 function getMod(score) {
   return Math.floor((score - 10) / 2);
 }
@@ -116,7 +121,7 @@ function updateAll() {
     document.getElementById(`mod-${ability}`).innerText = mod >= 0 ? `+${mod}` : `${mod}`;
 
     const prof = document.getElementById(`save-prof-${ability}`).checked;
-    const bonus = mod + (prof ? proficiencyBonus : 0);
+    const bonus = mod + (prof ?  : 0);
     document.getElementById(`save-${ability}`).innerText = bonus >= 0 ? `+${bonus}` : `${bonus}`;
   });
 
@@ -128,7 +133,7 @@ function updateAll() {
     if (value === "proficient") multiplier = 1;
     else if (value === "expertise") multiplier = 2;
 
-    const bonus = mod + proficiencyBonus * multiplier;
+    const bonus = mod +  * multiplier;
     document.getElementById(`skill-${skill}`).innerText = bonus >= 0 ? `+${bonus}` : `${bonus}`;
   }
 }
