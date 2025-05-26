@@ -136,6 +136,18 @@ function updateAll() {
     const bonus = mod + getProficiencyBonus() * multiplier;
     document.getElementById(`skill-${skill}`).innerText = bonus >= 0 ? `+${bonus}` : `${bonus}`;
   }
+
+  // Passive Senses
+  const perceptionMod = parseInt(document.getElementById("skill-Perception").innerText);
+  const insightMod = parseInt(document.getElementById("skill-Insight").innerText);
+  const investigationMod = parseInt(document.getElementById("skill-Investigation").innerText);
+  
+  document.getElementById("passive-perception").innerText = 10 + perceptionMod;
+  document.getElementById("passive-insight").innerText = 10 + insightMod;
+  document.getElementById("passive-investigation").innerText = 10 + investigationMod;
+
+
+  
 }
 
 
