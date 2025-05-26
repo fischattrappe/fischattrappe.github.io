@@ -91,6 +91,41 @@
     </div>
   </div>
 
+
+  <div class="container" style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+    <!-- SENSES -->
+    <div class="block" style="flex: 1; min-width: 250px;">
+      <h2>Senses</h2>
+      <label>Passive Wisdom (Perception): <span id="passive-perception">10</span></label><br>
+      <label>Passive Wisdom (Insight): <span id="passive-insight">10</span></label><br>
+      <label>Passive Intelligence (Investigation): <span id="passive-investigation">10</span></label><br><br>
+      <textarea id="additional-senses" rows="4" style="width: 100%;" placeholder="Darkvision 60ft, Tremorsense..."></textarea>
+    </div>
+  
+    <!-- ATTACKS -->
+    <div class="block" style="flex: 2; min-width: 400px;">
+      <h2>Weapon Attacks & Cantrips</h2>
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Hit</th>
+            <th>Damage/Type</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="attack-table">
+          <!-- 5 rows default -->
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   
 
   <!-- Race-Import-->
