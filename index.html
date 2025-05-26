@@ -52,12 +52,17 @@
     <!-- Dynamisch per JS -->
   </div>
 
-  <div style="flex: 2; min-width: 300px;">
-    <div class="block" id="saves">
-      <h2>Saving Throws</h2>
-      <!-- Dynamisch per JS -->
-      <textarea id="actions" rows="5" style="width: 60%; resize: vertical;"></textarea>
-    </div>
+  <div class="block" id="saves">
+    <h2>Saving Throws</h2>
+    <div id="saves-list"></div> <!-- Nur hier wird JS-Inhalt eingefügt -->
+  
+      <!-- Statischer Zusatztext -->
+      <div id="save-notes-container">
+        <label for="save-notes">Additional Save Features:</label><br>
+        <textarea id="save-notes" rows="3" style="width: 100%; resize: vertical;" placeholder="e.g. Evasion or Fey Ancestry."></textarea>
+      </div>
+  </div>
+
 
     <div class="block" id="skillsBlock">
       <h2>Skills</h2>
