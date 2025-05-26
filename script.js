@@ -55,6 +55,11 @@ function createAbilityInputs() {
 
 function createSavingThrows() {
   const container = document.getElementById("saves");
+
+  // Optional: Leeren, falls neu erzeugt wird
+  container.innerHTML = '<h2>Saving Throws</h2>';
+
+  // Dynamisch alle Saving Throws erzeugen
   abilities.forEach(ability => {
     const label = document.createElement("label");
     label.classList.add("skill-label");
@@ -74,7 +79,30 @@ function createSavingThrows() {
     label.append(name, prof, bonus);
     container.appendChild(label);
   });
+
+  //Am Ende: Zusätzliche Infos-Textbox einfügen (nur wenn noch nicht vorhanden)
+  if (!document.getElementById("save-notes")) {
+    const notesContainer = document.createElement("div");
+    notesContainer.id = "save-notes-container";
+
+    const label = document.createElement("label");
+    label.setAttribute("for", "save-notes");
+    label.innerText = "Additional Save Features:";
+
+    const textarea = document.createElement("textarea");
+    textarea.id = "save-notes";
+    textarea.rows = 3;
+    textarea.style = "width: 100%; resize: vertical;";
+    textarea.placeholder = "e.g. Evasion, advantage vs. charm, etc.";
+
+    notesContainer.appendChild(label);
+    notesContainer.appendChild(document.createElement("br"));
+    notesContainer.appendChild(textarea);
+
+    container.appendChild(notesContainer);
+  }
 }
+
 
 
 function createSkills() {
