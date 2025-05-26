@@ -1,6 +1,6 @@
 const abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"];
 const skills = {
-  "Acrobatics AAA": "Dexterity",
+  "Acrobatics": "Dexterity",
   "Animal Handling": "Wisdom",
   "Arcana": "Intelligence",
   "Athletics": "Strength",
