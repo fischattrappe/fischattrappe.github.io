@@ -100,3 +100,15 @@ input[type="checkbox"] {
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 }
 
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 4px;
+  text-align: left;
+}
+
+table input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px;
+}
+
