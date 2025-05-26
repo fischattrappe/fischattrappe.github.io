@@ -8,15 +8,10 @@
 </head>
 <body>
   <h1>🧙 D&D Charakterbogen Test</h1>
+
   
-  <div class="container">
-    <div class="block" id="Test">
-      <h2>Name</h2>
-      <label for="charName">Character Name</label><br>
-      <input type="text" id="charName" placeholder="Isa">
-  </div>
-  
-  <div id="character-header" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+ <!-- Charakter-Header: Name, Klasse, Rasse usw. -->
+<div id="character-header" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
   <div>
     <label for="charName">Character Name</label><br>
     <input type="text" id="charName" placeholder="Isa">
@@ -46,7 +41,8 @@
 
   
 
-<div class="container" style="display: flex; gap: 20px; flex-wrap: wrap;">
+<!-- Charakterbogen-Bereich -->
+<div id="character-core" class="container" style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
   <!-- Linke Spalte: Ability Scores -->
   <div class="block" id="abilities" style="flex: 1; min-width: 200px;">
     <h2>Ability Scores</h2>
@@ -55,7 +51,6 @@
 
   <!-- Rechte Spalte: Saving Throws + Skills -->
   <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 20px;">
-    <!-- Saving Throws Block -->
     <div class="block" id="saves">
       <h2>Saving Throws</h2>
       <div id="saves-list"></div>
@@ -65,7 +60,6 @@
       </div>
     </div>
 
-    <!-- Skills Block -->
     <div class="block" id="skillsBlock">
       <h2>Skills</h2>
       <div id="skills">
@@ -74,6 +68,7 @@
     </div>
   </div>
 </div>
+
 
 
   <div class="block right-column" style="flex: 1; min-width: 250px;">
