@@ -47,23 +47,25 @@
   
 
 <div class="container" style="display: flex; gap: 20px; flex-wrap: wrap;">
+  <!-- Linke Spalte: Ability Scores -->
   <div class="block" id="abilities" style="flex: 1; min-width: 200px;">
     <h2>Ability Scores</h2>
     <!-- Dynamisch per JS -->
   </div>
 
-  <div class="block" id="saves">
-    <h2>Saving Throws</h2>
-    <div id="saves-list"></div> <!-- Nur hier wird JS-Inhalt eingefügt -->
-  
-      <!-- Statischer Zusatztext -->
+  <!-- Rechte Spalte: Saving Throws + Skills -->
+  <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 20px;">
+    <!-- Saving Throws Block -->
+    <div class="block" id="saves">
+      <h2>Saving Throws</h2>
+      <div id="saves-list"></div>
       <div id="save-notes-container">
         <label for="save-notes">Additional Save Features:</label><br>
         <textarea id="save-notes" rows="3" style="width: 60%; resize: vertical;" placeholder="e.g. Evasion or Fey Ancestry."></textarea>
       </div>
-  </div>
+    </div>
 
-
+    <!-- Skills Block -->
     <div class="block" id="skillsBlock">
       <h2>Skills</h2>
       <div id="skills">
@@ -71,6 +73,8 @@
       </div>
     </div>
   </div>
+</div>
+
 
   <div class="block right-column" style="flex: 1; min-width: 250px;">
     <h2>General Stats</h2>
