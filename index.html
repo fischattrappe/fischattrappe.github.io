@@ -46,28 +46,27 @@
 
   
 
-<div class="container" style="display: flex; flex-wrap: wrap; gap: 20px;">
-  <div class="left-column" style="flex: 2; min-width: 300px;">
-    <div class="block" id="abilities">
-      <h2>Ability Scores</h2>
+<div class="container" style="display: flex; gap: 20px; flex-wrap: wrap;">
+  <div class="block" id="abilities" style="flex: 1; min-width: 200px;">
+    <h2>Ability Scores</h2>
+    <!-- Dynamisch per JS -->
+  </div>
+
+  <div style="flex: 2; min-width: 300px;">
+    <div class="block" id="saves">
+      <h2>Saving Throws</h2>
       <!-- Dynamisch per JS -->
     </div>
 
-    <div class="block saving-skills-wrapper">
-      <div id="saves" class="saves-box">
-        <h2>Saving Throws</h2>
+    <div class="block" id="skillsBlock">
+      <h2>Skills</h2>
+      <div id="skills">
         <!-- Dynamisch per JS -->
-      </div>
-
-      <div id="skillsBlock" class="skills-box">
-        <h2>Skills</h2>
-        <div id="skills">
-          <!-- Dynamisch per JS -->
-        </div>
       </div>
     </div>
   </div>
 
+  <!-- Kampfwerte-Box bleibt -->
   <div class="block right-column" style="flex: 1; min-width: 250px;">
     <h2>Kampfwerte</h2>
     <label>Armor Class <input type="number" id="armorClass" value="10"></label><br>
@@ -80,13 +79,13 @@
     <label>Hit Dice <input type="text" id="hitDice" placeholder="1d8"></label>
   </div>
 
+  <!-- Race-Import bleibt ganz unten -->
   <div class="block" id="raceImport" style="flex: 1 1 100%;">
     <h2>Race Import</h2>
     <button id="race-import-button">📋 Rasse einfügen</button>
     <pre id="raceInfo" style="white-space: pre-wrap;"></pre>
   </div>
 </div>
-
 
   <script src="script.js"></script>
 </body>
