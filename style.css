@@ -43,3 +43,45 @@ input[type="checkbox"] {
   justify-content: space-between;
   align-items: center;
 }
+
+.saving-skills-wrapper {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+}
+
+.saves-box, .skills-box {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.saves-box:first-child {
+  border-top: none;
+}
+
+.skill-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 3px 0;
+}
+
+.skill-label span {
+  margin-right: auto;
+  width: 40%;
+}
+
+.skill-label select {
+  margin: 0 10px;
+}
+
+.skill-label span:last-child {
+  width: 30px;
+  text-align: right;
+  font-weight: bold;
+}
+
