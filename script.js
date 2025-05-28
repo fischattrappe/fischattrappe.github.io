@@ -278,11 +278,12 @@ async function pasteRace() {
     }
 
     const raceInfo = document.getElementById("raceInfo");
-    raceInfo.innerText = `Rasse: ${data.name}\n\nSpeed: ${speedText}\n\nBeschreibung:\n${
-      Array.isArray(data.abilities)
-        ? data.abilities.map(entry => `${entry.name}:\n${entry.entries?.join("\n")}`).join("\n\n")
-        : (data.abilities || "Keine Einträge.")
-    }`;
+        raceInfo.innerHTML = `<strong>Rasse:</strong> ${data.name}<br><strong>Speed:</strong> ${speedText}<br><br>`;
+        if (Array.isArray(data.entries)) {
+          raceInfo.appendChild(renderEntries(data.entries));
+        } else {
+          raceInfo.innerHTML += data.entries || "Keine Einträge.";
+        }
 
   } catch (e) {
     alert("Fehler beim Einfügen der Rasse: " + e.message);
