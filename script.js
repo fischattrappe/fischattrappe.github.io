@@ -179,6 +179,62 @@ function updateAll() {
 }
 
 
+function renderEntries(entries, parent = null) {
+  const container = parent || document.createElement("div");
+
+  entries.forEach(entry => {
+    if (typeof entry === "string") {
+      const p = document.createElement("p");
+      p.innerText = entry;
+      container.appendChild(p);
+    } else if (entry.name && entry.entries) {
+      const section = document.createElement("div");
+      const h3 = document.createElement("h3");
+      h3.innerText = entry.name;
+      section.appendChild(h3);
+      renderEntries(entry.entries, section);
+      container.appendChild(section);
+    } else if (entry.type === "list" && Array.isArray(entry.items)) {
+      const ul = document.createElement("ul");
+      entry.items.forEach(item => {
+        const li = document.createElement("li");
+        li.innerText = item;
+        ul.appendChild(li);
+      });
+      container.appendChild(ul);
+    } else if (entry.type === "table" && entry.colLabels && entry.rows) {
+      const table = document.createElement("table");
+      const thead = document.createElement("thead");
+      const headerRow = document.createElement("tr");
+      entry.colLabels.forEach(label => {
+        const th = document.createElement("th");
+        th.innerText = label;
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
+      entry.rows.forEach(row => {
+        const tr = document.createElement("tr");
+        row.forEach(cell => {
+          const td = document.createElement("td");
+          td.innerText = typeof cell === "string" ? cell : JSON.stringify(cell);
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      container.appendChild(table);
+    }
+  });
+
+  return container;
+}
+
+
+
+
 async function pasteRace() {
   try {
     const text = await navigator.clipboard.readText();
@@ -223,8 +279,30 @@ async function pasteRace() {
       speedText = "Unbekannt";
     }
 
-    document.getElementById("raceInfo").innerText =
-      `RACE: ${data.name}\n\nSpeed: ${speedText}\n\nAbilities:\n${data.abilities}`;
+    const raceInfo = document.getElementById("raceInfo");
+    raceInfo.innerHTML = ""; // Leeren
+    
+    const title = document.createElement("h2");
+    title.innerText = `Rasse: ${data.name}`;
+    raceInfo.appendChild(title);
+    
+    const speedPara = document.createElement("p");
+    speedPara.innerHTML = `<strong>Speed:</strong> ${speedText}`;
+    raceInfo.appendChild(speedPara);
+    
+    const abilitiesHeader = document.createElement("h3");
+    abilitiesHeader.innerText = "Beschreibung";
+    raceInfo.appendChild(abilitiesHeader);
+    
+    if (Array.isArray(data.abilities)) {
+      const entries = renderEntries(data.abilities);
+      raceInfo.appendChild(entries);
+    } else {
+      const fallback = document.createElement("p");
+      fallback.innerText = data.abilities || "Keine Einträge.";
+      raceInfo.appendChild(fallback);
+    }
+
   } catch (e) {
     alert("Fehler beim Einfügen der Rasse: " + e.message);
   }
