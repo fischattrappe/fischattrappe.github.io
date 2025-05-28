@@ -242,11 +242,11 @@ async function pasteRace() {
 
     let speedText = "";
     const translations = {
-      walk: "Gehen",
-      fly: "Flug",
-      swim: "Schwimmen",
-      climb: "Klettern",
-      burrow: "Graben"
+      walk: "walk",
+      fly: "fly",
+      swim: "swim",
+      climb: "climb",
+      burrow: "burrow"
     };
 
     if (typeof data.speed === "number") {
@@ -263,7 +263,6 @@ async function pasteRace() {
         }
       });
 
-      // Format wie: "30 ft (Flug: 30 ft, Schwimmen: ...)"
       const walkSpeed = data.speed.walk;
       if (typeof walkSpeed === "number") {
         speedText = `${walkSpeed} ft`;
@@ -272,7 +271,6 @@ async function pasteRace() {
           speedText += ` (${otherSpeeds.join(", ")})`;
         }
       } else {
-        // Kein walk-Speed vorhanden – gib alles aus
         speedText = entries.join(", ");
       }
     } else {
@@ -280,33 +278,17 @@ async function pasteRace() {
     }
 
     const raceInfo = document.getElementById("raceInfo");
-    raceInfo.innerHTML = ""; // Leeren
-    
-    const title = document.createElement("h2");
-    title.innerText = `Rasse: ${data.name}`;
-    raceInfo.appendChild(title);
-    
-    const speedPara = document.createElement("p");
-    speedPara.innerHTML = `<strong>Speed:</strong> ${speedText}`;
-    raceInfo.appendChild(speedPara);
-    
-    const abilitiesHeader = document.createElement("h3");
-    abilitiesHeader.innerText = "Beschreibung";
-    raceInfo.appendChild(abilitiesHeader);
-    
-    if (Array.isArray(data.abilities)) {
-      const entries = renderEntries(data.abilities);
-      raceInfo.appendChild(entries);
-    } else {
-      const fallback = document.createElement("p");
-      fallback.innerText = data.abilities || "Keine Einträge.";
-      raceInfo.appendChild(fallback);
-    }
+    raceInfo.innerText = `Rasse: ${data.name}\n\nSpeed: ${speedText}\n\nBeschreibung:\n${
+      Array.isArray(data.abilities)
+        ? data.abilities.map(entry => `${entry.name}:\n${entry.entries?.join("\n")}`).join("\n\n")
+        : (data.abilities || "Keine Einträge.")
+    }`;
 
   } catch (e) {
     alert("Fehler beim Einfügen der Rasse: " + e.message);
   }
 }
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
