@@ -112,3 +112,34 @@ table input {
   padding: 4px;
 }
 
+
+#raceInfo h2 {
+  font-size: 1.5em;
+  margin-top: 1em;
+}
+
+#raceInfo h3 {
+  font-size: 1.2em;
+  margin-top: 0.8em;
+}
+
+#raceInfo p {
+  margin: 0.5em 0;
+}
+
+#raceInfo ul {
+  margin-left: 1.2em;
+}
+
+#raceInfo table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+#raceInfo th, #raceInfo td {
+  border: 1px solid #ccc;
+  padding: 0.5em;
+  text-align: left;
+}
+
