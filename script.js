@@ -242,7 +242,7 @@ async function pasteRace() {
 
     let speedText = "";
     const translations = {
-      walk: "walk",
+      //walk: "walk",
       fly: "fly",
       swim: "swim",
       climb: "climb",
