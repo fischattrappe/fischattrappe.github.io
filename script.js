@@ -290,6 +290,32 @@ async function pasteRace() {
 }
 
 
+// Save all input and textarea values to localStorage on change
+function saveSheet() {
+  const data = {};
+  document.querySelectorAll('input, textarea').forEach(el => {
+    if (el.id) data[el.id] = el.value;
+  });
+  localStorage.setItem('dndCharacterSheet', JSON.stringify(data));
+}
+
+// Restore saved values from localStorage on page load
+function loadSheet() {
+  const data = JSON.parse(localStorage.getItem('dndCharacterSheet') || '{}');
+  for (const [id, value] of Object.entries(data)) {
+    const el = document.getElementById(id);
+    if (el) el.value = value;
+  }
+}
+
+// Attach event listeners to save on input
+document.addEventListener('DOMContentLoaded', () => {
+  loadSheet();
+  document.querySelectorAll('input, textarea').forEach(el => {
+    el.addEventListener('input', saveSheet);
+  });
+});
+
 
 document.addEventListener("DOMContentLoaded", () => {
   createAbilityInputs();
