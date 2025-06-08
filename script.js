@@ -290,39 +290,47 @@ async function pasteRace() {
 }
 
 
-// Save all input and textarea values to localStorage on change
 function saveSheet() {
   const data = {};
-  document.querySelectorAll('input, textarea').forEach(el => {
-    if (el.id) data[el.id] = el.value;
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    if (!el.id) return;
+    if (el.type === "checkbox") {
+      data[el.id] = el.checked;   // Save checked state (true/false)
+    } else {
+      data[el.id] = el.value;     // Save value for other input types
+    }
   });
   localStorage.setItem('dndCharacterSheet', JSON.stringify(data));
 }
 
-// Restore saved values from localStorage on page load
 function loadSheet() {
   const data = JSON.parse(localStorage.getItem('dndCharacterSheet') || '{}');
   for (const [id, value] of Object.entries(data)) {
     const el = document.getElementById(id);
-    if (el) el.value = value;
+    if (!el) continue;
+    if (el.type === "checkbox") {
+      el.checked = value;         // Restore .checked for checkboxes
+    } else {
+      el.value = value;           // Restore .value for others
+    }
   }
 }
 
-// Attach event listeners to save on input
 document.addEventListener('DOMContentLoaded', () => {
-  loadSheet();
-  document.querySelectorAll('input, textarea').forEach(el => {
-    el.addEventListener('input', saveSheet);
-  });
-});
-
-
-document.addEventListener("DOMContentLoaded", () => {
+  // 1. Build dynamic UI
   createAbilityInputs();
   createSavingThrows();
   createSkills();
   updateAll();
   document.getElementById("race-import-button").addEventListener("click", pasteRace);
+
+  // 2. Restore saved values
+  loadSheet();
+
+  // 3. Attach save listeners
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', saveSheet);
+  });
 });
 
 
