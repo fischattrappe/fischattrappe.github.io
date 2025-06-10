@@ -278,7 +278,7 @@ async function pasteRace() {
     }
 
     const raceInfo = document.getElementById("raceInfo");
-    raceInfo.innerHTML = `<strong>Rasse:</strong> ${data.name}<br><strong>Speed:</strong> ${speedText}<br><br>`;
+    raceInfo.value = `Rasse: ${data.name}\nSpeed: ${speedText}\n\n`;
     if (Array.isArray(data.entries)) {
       raceInfo.appendChild(renderEntries(data.entries));
     } else {
