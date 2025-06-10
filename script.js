@@ -240,9 +240,10 @@ async function pasteRace() {
     const text = await navigator.clipboard.readText();
     const data = JSON.parse(text);
 
+    // --- Speed formatting (simplified to English for clarity) ---
     let speedText = "";
     const translations = {
-      //walk: "walk",
+      walk: "walk",
       fly: "fly",
       swim: "swim",
       climb: "climb",
@@ -257,7 +258,7 @@ async function pasteRace() {
         if (typeof value === "number") {
           return `${label}: ${value} ft`;
         } else if (value === true) {
-          return `${label}: gleich Gehgeschwindigkeit`;
+          return `${label}: equal to walking speed`;
         } else {
           return `${label}: ?`;
         }
@@ -266,7 +267,7 @@ async function pasteRace() {
       const walkSpeed = data.speed.walk;
       if (typeof walkSpeed === "number") {
         speedText = `${walkSpeed} ft`;
-        const otherSpeeds = entries.filter(e => !e.startsWith("Gehen:"));
+        const otherSpeeds = entries.filter(e => !e.startsWith("walk:"));
         if (otherSpeeds.length > 0) {
           speedText += ` (${otherSpeeds.join(", ")})`;
         }
@@ -274,29 +275,31 @@ async function pasteRace() {
         speedText = entries.join(", ");
       }
     } else {
-      speedText = "Unbekannt";
+      speedText = "Unknown";
     }
 
+    // --- Output name and speed ---
     const raceInfo = document.getElementById("raceInfo");
-    raceInfo.value = `Rasse: ${data.name}\nSpeed: ${speedText}\n\n`;
+    raceInfo.value = `Race: ${data.name}\nSpeed: ${speedText}\n\n`;
 
-    if (Array.isArray(data.abilities)) {
-      const plainText = data.abilities.map(entry => {
-        return entry.name ? `- ${entry.name}: ${entry.entries?.join(" ") ?? ""}` : `- ${entry}`;
-      }).join("\n");
-      raceInfo.value += `Beschreibung:\n${plainText}`;
+    // --- Render features from "entries" ---
+    if (Array.isArray(data.entries)) {
+      const features = data.entries.map(entry => {
+        let desc = '';
+        if (Array.isArray(entry.entries)) {
+          desc = entry.entries.join(' ');
+        } else {
+          desc = entry.entries || '';
+        }
+        return `- ${entry.name}: ${desc}`;
+      }).join('\n');
+      raceInfo.value += `Features:\n${features}`;
     } else {
-      raceInfo.value += `Beschreibung:\n${data.abilities || "Keine Einträge."}`;
+      raceInfo.value += `Features:\n${data.entries || "No entries."}`;
     }
 
-    
-  //  if (Array.isArray(data.entries)) {
-  //    raceInfo.appendChild(renderEntries(data.entries));
-    } else {
-      raceInfo.innerHTML += data.entries || "Keine Einträge.";
-    }
   } catch (e) {
-    alert("Fehler beim Einfügen der Rasse: " + e.message);
+    alert("Error pasting race: " + e.message);
   }
 }
 
