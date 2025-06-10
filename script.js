@@ -279,8 +279,19 @@ async function pasteRace() {
 
     const raceInfo = document.getElementById("raceInfo");
     raceInfo.value = `Rasse: ${data.name}\nSpeed: ${speedText}\n\n`;
-    if (Array.isArray(data.entries)) {
-      raceInfo.appendChild(renderEntries(data.entries));
+
+    if (Array.isArray(data.abilities)) {
+      const plainText = data.abilities.map(entry => {
+        return entry.name ? `- ${entry.name}: ${entry.entries?.join(" ") ?? ""}` : `- ${entry}`;
+      }).join("\n");
+      raceInfo.value += `Beschreibung:\n${plainText}`;
+    } else {
+      raceInfo.value += `Beschreibung:\n${data.abilities || "Keine Einträge."}`;
+    }
+
+    
+  //  if (Array.isArray(data.entries)) {
+  //    raceInfo.appendChild(renderEntries(data.entries));
     } else {
       raceInfo.innerHTML += data.entries || "Keine Einträge.";
     }
